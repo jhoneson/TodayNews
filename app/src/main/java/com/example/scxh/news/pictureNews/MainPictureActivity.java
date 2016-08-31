@@ -44,14 +44,12 @@ public class MainPictureActivity extends AppCompatActivity {
         array.add(beatifulFragment);
         array.add(interestFragment);
         array.add(storyFragment);
-        Log.e(">>>","list_fragment=="+array.size());
 
         list=new ArrayList<>();
         list.add("精品");
         list.add("美图");
         list.add("趣图");
         list.add("内涵");
-        Log.e(">>>","list_title=="+list.size());
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.addTab(tabLayout.newTab().setText(list.get(0)));

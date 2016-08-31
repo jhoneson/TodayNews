@@ -56,7 +56,6 @@ public class InterestFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String ids=helperList.get(position).getId();
                 String pic_url="http://api.sina.cn/sinago/article.json?postt=hdpic_hdpic_toutiao_4&wm=b207&from=6042095012&chwm=12050_0001&oldchwm=12050_0001&imei=867064013906290&uid=802909da86d9f5fc&id="+ids;
-                Log.e("interest pic_url","===="+pic_url);
                 connectionUtils.asycnConnect(pic_url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
                     @Override
                     public void execute(String content){
@@ -69,7 +68,6 @@ public class InterestFragment extends Fragment {
                             for(int i=0;i< array.length();i++){
                                 JSONObject jsonObject2=array.getJSONObject(i);
                                 URL=jsonObject2.getString("kpic");
-                                Log.e("url","===="+URL);
                             }
 
                             String title=jsonObject1.getString("lead");
@@ -97,7 +95,6 @@ public class InterestFragment extends Fragment {
         connectionUtils.asycnConnect(url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
             @Override
             public void execute(String content) {
-                Log.e("content>>>>>","=="+content);
                 try {
                     JSONObject jsonObject=new JSONObject(content);
                     JSONObject object=jsonObject.getJSONObject("data");
@@ -162,7 +159,7 @@ public class InterestFragment extends Fragment {
             }
             viewHolder= (ViewHolder) convertView.getTag();
             Helper Lists = (Helper) getItem(position);
-            Glide.with(context).load(Lists.getUrl()).override(400,200).into(viewHolder.icon);
+            Glide.with(context).load(Lists.getUrl()).override(600,200).into(viewHolder.icon);
             viewHolder.textView.setText(Lists.getTitle());
             return convertView;
         }

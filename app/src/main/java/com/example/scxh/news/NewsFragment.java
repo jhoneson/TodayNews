@@ -6,10 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +30,51 @@ public class NewsFragment extends Fragment {
     private AthleteFragment athleteFragment;
     private ScienceFragment scienceFragment;
     private TabAdapter adapter;
+    private LinearLayout linearLayout;
+    private TextView moretxt;
 
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
         return fragment;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v= inflater.inflate(R.layout.fragment_news_layout, container, false);
+        final View v= inflater.inflate(R.layout.fragment_news_layout, container, false);
+        linearLayout= (LinearLayout) v.findViewById(R.id.linealer);
+        moretxt= (TextView) v.findViewById(R.id.tab_more);
         initial(v);
+        moretxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu=new PopupMenu(getContext(),view);
+                MenuInflater menuInflater=popupMenu.getMenuInflater();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                         @Override
+                                                         public boolean onMenuItemClick(MenuItem menuItem) {
+                                                             switch (menuItem.getItemId()){
+                                                                 case R.id.car:
+                                                                     Toast.makeText(getContext(),"汽车已选中",Toast.LENGTH_SHORT).show();
+                                                                      return true;
+                                                                 case R.id.smile:
+                                                                     Toast.makeText(getContext(),"搞笑段子已选中",Toast.LENGTH_SHORT).show();
+                                                                     return true;
+                                                                 case R.id.house:
+                                                                     Toast.makeText(getContext(),"房产已选中",Toast.LENGTH_SHORT).show();
+                                                                     return true;
+                                                                 case R.id.ticket:
+                                                                     Toast.makeText(getContext(),"车票已选中",Toast.LENGTH_SHORT).show();
+                                                                     return true;
+                                                                 default:return false;
+                                                             }
+                                                         }
+                                                     });
+
+                        menuInflater.inflate(R.menu.pop, popupMenu.getMenu());
+                popupMenu.show();
+            }
+        });
+
         return v;
     }
     public void initial(View view){
@@ -55,8 +94,6 @@ public class NewsFragment extends Fragment {
         list_fragment.add(athleteFragment);
         list_fragment.add(scienceFragment);
         list_fragment.add(entertainmentFragment);
-        Log.e(">>>","list_fragment=="+list_fragment.size());
-
         list_title=new ArrayList<>();
         list_title.add("热点");
         list_title.add("财经");

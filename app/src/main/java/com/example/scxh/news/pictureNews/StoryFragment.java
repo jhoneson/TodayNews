@@ -39,7 +39,6 @@ public class StoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_story, container, false);
     }
 
@@ -57,26 +56,21 @@ public class StoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String ids=helperList.get(position).getId();
                 String pic_url="http://api.sina.cn/sinago/article.json?postt=hdpic_hdpic_toutiao_4&wm=b207&from=6042095012&chwm=12050_0001&oldchwm=12050_0001&imei=867064013906290&uid=802909da86d9f5fc&id="+ids;
-                Log.e("story pic_url","===="+pic_url);
                 connectionUtils.asycnConnect(pic_url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
                     @Override
                     public void execute(String content){
                         JSONObject jsonObject= null;
                         String URL=null;
                         try {
-                            Log.e("content","===="+content);
                             jsonObject = new JSONObject(content);
                             JSONObject jsonObject1=jsonObject.getJSONObject("data");
                             JSONArray array=jsonObject1.getJSONArray("pics");
                             for(int i=0;i< array.length();i++){
                                 JSONObject jsonObject2=array.getJSONObject(i);
                                 URL=jsonObject2.getString("kpic");
-                                Log.e("url","===="+URL);
                             }
                             String title=jsonObject1.getString("lead");
-                            Log.e("title","===="+title);
                             String contents=jsonObject1.getString("content");
-                            Log.e("contents","===="+contents);
                             Bundle bundle=new Bundle();
                             bundle.putString("link",URL);
                             bundle.putString("lead",title);
@@ -99,7 +93,6 @@ public class StoryFragment extends Fragment {
         connectionUtils.asycnConnect(url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
             @Override
             public void execute(String content) {
-                Log.e("content>>>>>","=="+content);
                 try {
                     JSONObject jsonObject=new JSONObject(content);
                     JSONObject object=jsonObject.getJSONObject("data");
@@ -109,7 +102,6 @@ public class StoryFragment extends Fragment {
                         Helper helper=new Helper();
                         JSONObject object1= (JSONObject) array.get(i);
                         helper.setTitle(object1.getString("long_title"));
-                        Log.e("kpic>>>>","=="+object1.getString("kpic"));
                         helper.setUrl(object1.getString("kpic"));
                         helper.setId(object1.getString("id"));
                         helperList.add(helper);
@@ -163,7 +155,7 @@ public class StoryFragment extends Fragment {
             }
             viewHolder= (ViewHolder) convertView.getTag();
             Helper Lists = (Helper) getItem(position);
-            Glide.with(getContext()).load(Lists.getUrl()).override(400,200).into(viewHolder.icon);
+            Glide.with(getContext()).load(Lists.getUrl()).override(600,200).into(viewHolder.icon);
             viewHolder.textView.setText(Lists.getTitle());
             return convertView;
         }

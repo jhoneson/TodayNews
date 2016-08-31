@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,17 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.scxh.news.httpLoadTxtUntils.ConnectionUtils;
 import com.example.scxh.news.httpLoadTxtUntils.NewsDetailActivity;
 import com.google.gson.Gson;
 import com.scxh.slider.library.SliderLayout;
 import com.scxh.slider.library.SliderTypes.BaseSliderView;
 import com.scxh.slider.library.SliderTypes.TextSliderView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,14 +73,12 @@ public class ScienceFragment extends Fragment {
                 First first= (First) adapterView.getAdapter().getItem(i);
                 String docid=first.getDocid();
                 String ItemUrl="http://c.m.163.com/nc/article/"+docid +"/full.html";
-                Log.e("ItemUrl","=="+ItemUrl);
                 getItemData(ItemUrl,docid);
 
             }
         });
     }
     public void getItemData(String url, final String doc){
-        Log.e("url","=="+url);
         connectionUtils.asycnConnect(url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
             @Override
             public void execute(String content){
@@ -88,7 +87,6 @@ public class ScienceFragment extends Fragment {
                     JSONObject jsonObject1=jsonObject.getJSONObject(doc);
                     String ptime=jsonObject1.getString("ptime");
                     String sourse=jsonObject1.getString("source");
-                    Log.e("sourses","==="+sourse);
                     String body=jsonObject1.getString("body");
                     JSONArray array=jsonObject1.getJSONArray("img");
                     String alt=null;
@@ -96,7 +94,6 @@ public class ScienceFragment extends Fragment {
                     for(int i=0;i<array.length();i++){
                         JSONObject jsonObject2=array.getJSONObject(i);
                         alt=jsonObject2.getString("alt");
-                        Log.e("alt","==="+alt);
                         src=jsonObject2.getString("src");
                     }
                     Intent intent = new Intent(getContext(),NewsDetailActivity.class);
@@ -130,11 +127,9 @@ public class ScienceFragment extends Fragment {
             @Override
             public void execute(String content) {
                 getHeaderView(content);
-                Log.e("hotFragment", "content==" + content);
                 Gson gson=new Gson();
                 News news=gson.fromJson(content,News.class);
                 list=news.getT1348649580692();
-                Log.e("size","=="+list.size());
                 adapter.SetData(list);
             }
 
@@ -194,34 +189,45 @@ public class ScienceFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int i, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
                 convertView = layoutInflater.inflate(R.layout.layout, null);
                 ImageView icon = (ImageView) convertView.findViewById(R.id.item_image);
                 TextView Title = (TextView) convertView.findViewById(R.id.item_title);
                 TextView Content = (TextView) convertView.findViewById(R.id.item_content);
+                ProgressBar progress= (ProgressBar) convertView.findViewById(R.id.item_progress);
 
                 viewHolder = new ViewHolder();
                 viewHolder.title = Title;
                 viewHolder.icon = icon;
                 viewHolder.content = Content;
+                viewHolder.progressBar=progress;
 
                 convertView.setTag(viewHolder);
             }
             viewHolder = (ViewHolder) convertView.getTag();
-            First item = (First) getItem(position);
+            First item = (First) getItem(i);
+            viewHolder.progressBar.setProgress(ProgressBar.VISIBLE);
+            final ViewHolder finalViewHolder = viewHolder;
+            Picasso.with(getContext()).load(item.getImgsrc()).into(viewHolder.icon, new Callback() {
+                @Override
+                public void onSuccess() {
+                    finalViewHolder.progressBar.setVisibility(View.GONE);
+                }
 
-            Glide.with(getContext()).load(item.getImgsrc()).into(viewHolder.icon);
-            Log.e("icon","=="+item.getImgsrc());
+                @Override
+                public void onError() {
+
+                }
+            });
             viewHolder.title.setText(item.getTitle());
-            Log.e("title","=="+item.getTitle());
             viewHolder.content.setText(item.getDigest());
-            Log.e("content","=="+item.getDigest());
             return convertView;
         }
 
         class ViewHolder {
+            ProgressBar progressBar;
             ImageView icon;
             TextView title;
             TextView content;

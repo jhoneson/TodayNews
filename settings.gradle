@@ -1,1 +1,1 @@
-include ':app', ':android-slidingmenu-library', ':Android-imageSlider-viktor-library'
+include ':app', ':android-slidingmenu-library', ':Android-imageSlider-viktor-library', ':JCModule'

@@ -1,24 +1,21 @@
 package com.example.scxh.news.video;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.jcmodule.JCVideoPlayer;
 import com.example.scxh.news.R;
 import com.example.scxh.news.httpLoadTxtUntils.ConnectionUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,20 +52,7 @@ public class NiceVideoFragment extends Fragment {
         adapter=new MyFunnyAdapter(getContext());
         listView.setAdapter(adapter);
         setData();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String mp4Url=list.get(position).getMp4_url();
-                Log.e("mp4Url","====="+mp4Url);
-                PlayMp4(mp4Url);
-            }
-        });
-    }
-    public void PlayMp4(String Mp4url){
-        Uri uri=Uri.parse(Mp4url);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "video/mp4");
-        startActivity(intent);
+
     }
     public void setData(){
         connectionUtils.asycnConnect(httpUrl, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
@@ -90,7 +74,6 @@ public class NiceVideoFragment extends Fragment {
                          nice.setTopicimg(topicimg);
                          lists.add(nice);
                     }
-                    Log.e("lists","======="+lists.size());
                     adapter.setList(lists);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -129,19 +112,17 @@ public class NiceVideoFragment extends Fragment {
             if(convertView==null){
                 convertView=layoutInflater.inflate(R.layout.video_item_layout,null);
                 TextView title= (TextView) convertView.findViewById(R.id.video_item_dsc);
-                ImageView imageView= (ImageView) convertView.findViewById(R.id.video_item_img);
+                JCVideoPlayer player= (JCVideoPlayer) convertView.findViewById(R.id.custom_videoplayer_standard);
                 videoViewHolder=new VideoViewHolder();
                 videoViewHolder.textView=title;
-                videoViewHolder.imageView=imageView;
-
+                videoViewHolder.jcVideoPlayer=player;
                 convertView.setTag(videoViewHolder);
             }
             videoViewHolder= (VideoViewHolder) convertView.getTag();
             Nice item= (Nice) getItem(position);
-            Log.e("tag","item.getDescription()"+item.getTitle());
             videoViewHolder.textView.setText(item.getTitle());
-            Log.e("tag","item.getTopicImg()"+item.getTopicimg());
-            Glide.with(getContext()).load(item.getTopicimg()).override(300,200).into(videoViewHolder.imageView);
+            videoViewHolder.jcVideoPlayer.setUp(item.getMp4_url(),item.getTitle());
+            ImageLoader.getInstance().displayImage(item.getTopicimg(),videoViewHolder.jcVideoPlayer.ivThumb);
             return convertView;
         }
 

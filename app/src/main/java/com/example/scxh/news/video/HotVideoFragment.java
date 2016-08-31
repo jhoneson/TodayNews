@@ -2,25 +2,22 @@ package com.example.scxh.news.video;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.jcmodule.JCVideoPlayer;
 import com.example.scxh.news.R;
 import com.example.scxh.news.httpLoadTxtUntils.ConnectionUtils;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +37,6 @@ public class HotVideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hot_video, container, false);
     }
 
@@ -53,20 +49,7 @@ public class HotVideoFragment extends Fragment {
         adapter=new MyAdapter(getContext());
         listView.setAdapter(adapter);
         setData();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String mp4Url=list.get(position).getMp4_url();
-                Log.e("mp4Url","====="+mp4Url);
-                PlayMp4(mp4Url);
-            }
-        });
-    }
-    public void PlayMp4(String Mp4url){
-        Uri uri=Uri.parse(Mp4url);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "video/mp4");
-        startActivity(intent);
+
     }
 
     public void setData(){
@@ -76,7 +59,6 @@ public class HotVideoFragment extends Fragment {
                 Gson gson=new Gson();
                 video video=gson.fromJson(content, video.class);
                 list=video.getV9LG4B3A0();
-                Log.e("list",">>>>>>"+list.size());
                 adapter.setList(list);
             }
         });
@@ -111,20 +93,18 @@ public class HotVideoFragment extends Fragment {
             VideoViewHolder videoViewHolder;
             if(convertView==null){
                 convertView=layoutInflater.inflate(R.layout.video_item_layout,null);
+                JCVideoPlayer player= (JCVideoPlayer) convertView.findViewById(R.id.custom_videoplayer_standard);
                 TextView title= (TextView) convertView.findViewById(R.id.video_item_dsc);
-                ImageView imageView= (ImageView) convertView.findViewById(R.id.video_item_img);
                 videoViewHolder=new VideoViewHolder();
                 videoViewHolder.textView=title;
-                videoViewHolder.imageView=imageView;
-
+                videoViewHolder.jcVideoPlayer=player;
                 convertView.setTag(videoViewHolder);
             }
             videoViewHolder= (VideoViewHolder) convertView.getTag();
             VideoHelper item= (VideoHelper) getItem(position);
-            Log.e("tag","item.getDescription()"+item.getTopicDesc());
             videoViewHolder.textView.setText(item.getTopicDesc());
-            Log.e("tag","item.getTopicImg()"+item.getTopicImg());
-            Glide.with(getContext()).load(item.getTopicImg()).into(videoViewHolder.imageView);
+            videoViewHolder.jcVideoPlayer.setUp(item.getMp4_url(),item.getTopicDesc());
+            ImageLoader.getInstance().displayImage(item.getTopicImg(),videoViewHolder.jcVideoPlayer.ivThumb);
             return convertView;
         }
 

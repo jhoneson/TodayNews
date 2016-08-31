@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.scxh.news.pictureNews.MainPictureActivity;
 import com.example.scxh.news.video.VideoActivity;
@@ -52,9 +53,12 @@ public class MyFragment extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(getContext(), VideoActivity.class));
                 break;
             case R.id.item_weather_myFragment:
+                Toast.makeText(getContext(),"天气模块正在开发中",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_more_myFragment:
+                Toast.makeText(getContext(),"更多模块正在开发中",Toast.LENGTH_SHORT).show();
                 break;
         }
+
     }
 }

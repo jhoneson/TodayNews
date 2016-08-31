@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Android-imageSlider-viktor-library" />
+            <option value="$PROJECT_DIR$/JCModule" />
             <option value="$PROJECT_DIR$/android-slidingmenu-library" />
             <option value="$PROJECT_DIR$/app" />
           </set>
@@ -18,6 +19,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Android-imageSlider-viktor-library" />
+            <option value="$PROJECT_DIR$/JCModule" />
             <option value="$PROJECT_DIR$/android-slidingmenu-library" />
             <option value="$PROJECT_DIR$/app" />
           </set>

@@ -27,12 +27,9 @@ public class getHttpTextUntils {
             url = new URL(httpDir);
             httpURLConnection= (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
-            int code=httpURLConnection.getResponseCode();
-            Log.e("111111","code:"+code);
             httpURLConnection.connect();
             is=httpURLConnection.getInputStream();
             msg=readIOFile(is);
-            Log.e(">>>>>>>>>","smg=="+msg);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ProtocolException e) {
@@ -61,7 +58,6 @@ public class getHttpTextUntils {
         String line = null;
         StringBuffer sb = new StringBuffer();
         while ((line = br.readLine()) != null) {
-            Log.e("line","=="+line);
             sb.append(line);
         }
         br.close();

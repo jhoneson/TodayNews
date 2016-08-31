@@ -1,7 +1,5 @@
 package com.warmtel.slidingmenu.lib;
 
-import java.lang.reflect.Method;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -27,14 +25,14 @@ import android.widget.RelativeLayout;
 
 import com.warmtel.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
+import java.lang.reflect.Method;
+
 public class SlidingMenu extends RelativeLayout {
 
 	private static final String TAG = "SlidingMenu";
-
 	public static final int SLIDING_WINDOW = 0;
 	public static final int SLIDING_CONTENT = 1;
 	private boolean mActionbarOverlay = false;
-
 	/**
 	 * 为setTouchModeAbove()方法设置一个常量值，允许滑动菜单通过滑动屏幕的边缘被打开
 	 */
@@ -333,7 +331,6 @@ public class SlidingMenu extends RelativeLayout {
 	/**
 	 * 得到下方（滑动菜单）的视图内容
 	 *
-	 * @param view The desired content to display.
 	 */
 	public void setMenu(View v) {
 		mViewBehind.setContent(v);

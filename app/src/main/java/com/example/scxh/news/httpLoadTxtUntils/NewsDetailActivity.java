@@ -35,9 +35,9 @@ public class NewsDetailActivity extends AppCompatActivity {
         String content=bundle.getString("BODY");
         String title=bundle.getString("ALT");
         String src=bundle.getString("SRC");
-        Glide.with(this).load(src).into(imageView);
-        mAttacher=new PhotoViewAttacher(imageView);
-//        mAttacher.update();
+        if(src!=null)
+            Glide.with(this).load(src).into(imageView);
+            mAttacher = new PhotoViewAttacher(imageView);
         if(title!=null){
             titleTxt.setText(Html.fromHtml(title));
         }else {

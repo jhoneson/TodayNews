@@ -3,12 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <ImageView
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+    <com.example.jcmodule.JCVideoPlayer
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/video_item_img"/>
+        android:layout_height="240dp"
+        android:id="@+id/custom_videoplayer_standard"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

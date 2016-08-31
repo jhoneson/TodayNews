@@ -58,7 +58,6 @@ public class PerfectFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String ids=helperList.get(position).getId();
                 String pic_url="http://api.sina.cn/sinago/article.json?postt=hdpic_hdpic_toutiao_4&wm=b207&from=6042095012&chwm=12050_0001&oldchwm=12050_0001&imei=867064013906290&uid=802909da86d9f5fc&id="+ids;
-                Log.e("perfect pic_url","===="+pic_url);
                 connectionUtils.asycnConnect(pic_url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
                     @Override
                     public void execute(String content){
@@ -70,12 +69,9 @@ public class PerfectFragment extends Fragment {
                             for(int i=0;i< array.length();i++){
                                 JSONObject jsonObject2=array.getJSONObject(i);
                                 URL=jsonObject2.getString("kpic");
-                                Log.e("url","===="+URL);
                             }
                             String title=jsonObject1.getString("lead");
-                            Log.e("title","====="+title);
                             String contents=jsonObject1.getString("content");
-                            Log.e("contents","====="+contents);
                             Bundle bundle=new Bundle();
                             bundle.putString("link",URL);
                             bundle.putString("lead",title);
@@ -99,7 +95,6 @@ public class PerfectFragment extends Fragment {
         connectionUtils.asycnConnect(url, ConnectionUtils.Method.GET, new ConnectionUtils.HttpConnectionInterface() {
             @Override
             public void execute(String content) {
-                Log.e("content>>>>>","=="+content);
                 try {
                     JSONObject jsonObject=new JSONObject(content);
                     JSONObject object=jsonObject.getJSONObject("data");

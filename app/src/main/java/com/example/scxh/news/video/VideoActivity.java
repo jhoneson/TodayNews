@@ -44,14 +44,12 @@ public class VideoActivity extends AppCompatActivity {
         arrays.add(entertainmentFragment);
         arrays.add(funnyFragment);
         arrays.add(niceVideoFragment);
-        Log.e(">>>","list_fragment=="+arrays.size());
 
         list=new ArrayList<>();
         list.add("热点");
         list.add("娱乐");
         list.add("搞笑");
         list.add("精品");
-        Log.e(">>>","list_title=="+list.size());
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.addTab(tabLayout.newTab().setText(list.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(list.get(1)));
